@@ -73,7 +73,7 @@ std::map<std::string, int> computeBigramHistogramParallel(const std::string& tex
             }
         }
 
-        // Aggiungi i risultati locali all'istogramma globale in modo critico
+        // Aggiunta dei risultati locali all'istogramma globale in modo critico
 #pragma omp critical
         {
             for (const auto& pair : localHistogram) {
@@ -113,7 +113,7 @@ std::map<std::string, int> computeTrigramHistogramParallel(const std::string& te
             }
         }
 
-        // Aggiungi i risultati locali all'istogramma globale in modo critico
+        // Aggiungta dei risultati locali all'istogramma globale in modo critico
 #pragma omp critical
         {
             for (const auto& pair : localHistogram) {
