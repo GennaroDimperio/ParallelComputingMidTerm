@@ -18,11 +18,12 @@ Ho utilizzato il framework di Thread Sanitizer per individuare eventuali problem
 Durante l'esecuzione dei test, sono stati segnalati due warning dal Thread Sanitizer. Tuttavia, dopo un'attenta analisi, 
 ho determinato che questi warning potrebbero essere dei "falsi positivi". Il framework stesso raccomanda di silenziarli in quanto non rappresentano vere problematiche di concorrenza nel codice. 
 
-## File MobyDick_chap1.txt
+## File generic_text.txt
 
-Ho utilizzato inizialmente un file di testo contenente il famoso libro di Moby Dick, ma in seguito sono stati aggiunti altri libri presi dal sito di "Gutenberg project".
+Ho utilizzato inizialmente un file di testo contenente il famoso libro di Moby Dick, ma in seguito sono stati aggiunti altri libri presi dal sito di "Gutenberg project". In seguito ho scaricato un file
+di testo generico di circa 100 MB.
 
-Modifiche al progetto 05/01/2024:
+Modifiche al repository del 05/01/2024:
 
 -Effettuati esperimenti cambiando il numero di thread per l'esecuzione in parallelo: sono stati condotti esperimenti per valutare l'impatto del numero di thread sull'esecuzione in parallelo. Ho apportate modifiche al codice per consentire la regolazione del numero di thread utilizzati. Ho utilizzato la funzione omp_set_num_threads() per impostare il numero di thread a valori diversi, come ad esempio 4, 8 e 16. Sono stati misurati i tempi di esecuzione e valutati i risultati ottenuti per determinare l'ottimale utilizzo del numero di thread per il caso specifico.
 
