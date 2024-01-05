@@ -74,7 +74,7 @@ std::map<std::string, int> computeBigramHistogramParallel(const std::string& tex
         }
 
         // Aggiunta dei risultati locali all'istogramma globale in modo critico
-#pragma omp critical
+#pragma omp critical(add_to_histogram)
         {
             for (const auto& pair : localHistogram) {
                 histogram[pair.first] += pair.second;
@@ -114,7 +114,7 @@ std::map<std::string, int> computeTrigramHistogramParallel(const std::string& te
         }
 
         // Aggiungta dei risultati locali all'istogramma globale in modo critico
-#pragma omp critical
+#pragma omp critical(add_to_histogram)
         {
             for (const auto& pair : localHistogram) {
                 histogram[pair.first] += pair.second;
@@ -164,6 +164,10 @@ int main() {
 
         std::cout << "---------------------------------------------------------------------------------------" << std::endl;
         auto startParallel = std::chrono::high_resolution_clock::now();
+        std::cout << "\n* Parallel Execution *" << std::endl;
+        int num_threads = 16;
+        omp_set_num_threads(num_threads);
+        std::cout << "\n Number of threads: "<< num_threads << std::endl;
 
 #pragma omp parallel sections // Inizio della sezione parallela
 
@@ -181,7 +185,6 @@ int main() {
 
         auto endParallel = std::chrono::high_resolution_clock::now();
 
-        std::cout << "\n* Parallel Execution *" << std::endl;
         std::cout << "\nBigram Histogram:" << std::endl;
         for (const auto& pair : bigramHistogram) {
             std::cout << pair.first << ": " << pair.second << std::endl;
@@ -191,7 +194,6 @@ int main() {
         for (const auto& pair : trigramHistogram) {
             std::cout << pair.first << ": " << pair.second << std::endl;
         }
-
 
         std::chrono::duration<double> parallelTime = endParallel - startParallel;
         std::cout << "\nParallel execution time: " << parallelTime.count() << " seconds." << std::endl;
