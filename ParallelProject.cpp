@@ -9,7 +9,7 @@
 #include <omp.h>
 #include <chrono>
 
-// Funzione per calcolare l'istogramma dei bigrammi in modo sequenzialmente
+// Funzione per calcolare l'istogramma dei bigrammi sequenzialmente
 std::map<std::string, int> computeBigramHistogram(const std::string& text) {
     std::map<std::string, int> histogram;
     std::locale loc;
@@ -25,7 +25,7 @@ std::map<std::string, int> computeBigramHistogram(const std::string& text) {
     return histogram;
 }
 
-// Funzione per calcolare l'istogramma dei trigrammi in modo sequenzialmente
+// Funzione per calcolare l'istogramma dei trigrammi sequenzialmente
 std::map<std::string, int> computeTrigramHistogram(const std::string& text) {
     std::map<std::string, int> histogram;
     std::locale loc("it_IT.UTF-8");
@@ -46,7 +46,7 @@ std::map<std::string, int> computeTrigramHistogram(const std::string& text) {
     return histogram;
 }
 
-// Funzione per calcolare l'istogramma dei bigrammi in modo parallelo
+// Funzione per calcolare l'istogramma dei bigrammi parallelamente
 std::map<std::string, int> computeBigramHistogramParallel(const std::string& text) {
     std::map<std::string, int> histogram;
     std::locale loc;
@@ -85,7 +85,8 @@ std::map<std::string, int> computeBigramHistogramParallel(const std::string& tex
     return histogram;
 }
 
-// Funzione per calcolare l'istogramma dei trigrammi in modo parallelo
+
+// Funzione per calcolare l'istogramma dei trigrammi parallelamente
 std::map<std::string, int> computeTrigramHistogramParallel(const std::string& text) {
     std::map<std::string, int> histogram;
     std::locale loc("it_IT.UTF-8");
@@ -113,7 +114,7 @@ std::map<std::string, int> computeTrigramHistogramParallel(const std::string& te
             }
         }
 
-        // Aggiungta dei risultati locali all'istogramma globale in modo critico
+        // Aggiunta dei risultati locali all'istogramma globale in modo critico
 #pragma omp critical(add_to_histogram)
         {
             for (const auto& pair : localHistogram) {
@@ -125,15 +126,16 @@ std::map<std::string, int> computeTrigramHistogramParallel(const std::string& te
     return histogram;
 }
 
+
 int main() {
     // Lettura del testo da un file
     std::string path = std::filesystem::current_path().string();
-    std::ifstream inputFile(path + "/generic_text.txt");
+    std::ifstream inputFile(path + "/MobyDick_chap1.txt");
     if (!inputFile.is_open() || !inputFile.good()) {
-        
+
         std::cout << "Impossibile aprire il file o l'input non e' valido." << std::endl;
         exit(EXIT_FAILURE);
-    
+
     }
 
     std::stringstream buffer;
@@ -142,64 +144,147 @@ int main() {
 
     auto startSequential = std::chrono::high_resolution_clock::now();
 
-        std::map<std::string, int> bigramHistogram = computeBigramHistogram(text);
-        std::map<std::string, int> trigramHistogram = computeTrigramHistogram(text);
+    std::map<std::string, int> bigramHistogram = computeBigramHistogram(text);
+    std::map<std::string, int> trigramHistogram = computeTrigramHistogram(text);
 
-        auto endSequential = std::chrono::high_resolution_clock::now();
+    auto endSequential = std::chrono::high_resolution_clock::now();
 
-        std::cout << "* Sequential Execution *" << std::endl;
+    std::cout << "* Sequential Execution *" << std::endl;
+    std::cout << "\nBigram Histogram:" << std::endl;
+    for (const auto& pair : bigramHistogram) {
+        std::cout << pair.first << ": " << pair.second << std::endl;
+    }
 
-        std::cout << "\nBigram Histogram:" << std::endl;
-        for (const auto& pair : bigramHistogram) {
-            std::cout << pair.first << ": " << pair.second << std::endl;
-        }
+    std::cout << "\nTrigram Histogram:" << std::endl;
+    for (const auto& pair : trigramHistogram) {
+        std::cout << pair.first << ": " << pair.second << std::endl;
+    }
 
-        std::cout << "\nTrigram Histogram:" << std::endl;
-        for (const auto& pair : trigramHistogram) {
-            std::cout << pair.first << ": " << pair.second << std::endl;
-        }
+    std::chrono::duration<double> sequentialTime = endSequential - startSequential;
+    std::cout << "\nSequential execution time: " << sequentialTime.count() << " seconds." << std::endl;
+    std::cout << "---------------------------------------------------------------------------------------" << std::endl;
+    auto startParallel16 = std::chrono::high_resolution_clock::now();
+    std::cout << "\n* Parallel Execution *" << std::endl;
+    int num_threads = 16;
+    omp_set_num_threads(num_threads);
+    std::cout << "\nNumber of threads: "<< num_threads << std::endl;
 
-        std::chrono::duration<double> sequentialTime = endSequential - startSequential;
-        std::cout << "\nSequential execution time: " << sequentialTime.count() << " seconds." << std::endl;
-
-        std::cout << "---------------------------------------------------------------------------------------" << std::endl;
-        auto startParallel = std::chrono::high_resolution_clock::now();
-        std::cout << "\n* Parallel Execution *" << std::endl;
-        int num_threads = 16;
-        omp_set_num_threads(num_threads);
-        std::cout << "\n Number of threads: "<< num_threads << std::endl;
 
 #pragma omp parallel sections // Inizio della sezione parallela
 
-        {
+    {
 #pragma omp section
-            {
-                bigramHistogram = computeBigramHistogramParallel(text);
-            }
+        {
+            bigramHistogram = computeBigramHistogramParallel(text);
+        }
 
 #pragma omp section 
-            {
-                trigramHistogram = computeTrigramHistogramParallel(text);
-            }
+        {
+            trigramHistogram = computeTrigramHistogramParallel(text);
+        }
+    }
+
+    auto endParallel16 = std::chrono::high_resolution_clock::now();
+
+    std::cout << "\nBigram Histogram:" << std::endl;
+    for (const auto& pair : bigramHistogram) {
+        std::cout << pair.first << ": " << pair.second << std::endl;
+    }
+
+    std::cout << "\nTrigram Histogram:" << std::endl;
+    for (const auto& pair : trigramHistogram) {
+        std::cout << pair.first << ": " << pair.second << std::endl;
+    }
+
+    std::chrono::duration<double> parallelTime16 = endParallel16 - startParallel16;
+    std::cout << "\nParallel execution time with 16 threads: " << parallelTime16.count() << " seconds." << std::endl;
+
+    auto speedup16 = sequentialTime.count() / parallelTime16.count();
+
+    std::cout << "\nSpeedup: " << speedup16 << std::endl;
+    std::cout << "---------------------------------------------------------------------------------------" << std::endl;
+    std::cout << "\n* Parallel Execution *" << std::endl;
+    auto startParallel8 = std::chrono::high_resolution_clock::now();
+    num_threads = 8;
+    omp_set_num_threads(num_threads);
+    std::cout << "\nNumber of threads: " << num_threads << std::endl;
+
+#pragma omp parallel sections // Inizio della sezione parallela
+
+    {
+#pragma omp section
+        {
+            bigramHistogram = computeBigramHistogramParallel(text);
         }
 
-        auto endParallel = std::chrono::high_resolution_clock::now();
+#pragma omp section 
+        {
+            trigramHistogram = computeTrigramHistogramParallel(text);
+        }
+    }
 
-        std::cout << "\nBigram Histogram:" << std::endl;
-        for (const auto& pair : bigramHistogram) {
-            std::cout << pair.first << ": " << pair.second << std::endl;
+    auto endParallel8 = std::chrono::high_resolution_clock::now();
+
+    std::cout << "\nBigram Histogram:" << std::endl;
+    for (const auto& pair : bigramHistogram) {
+        std::cout << pair.first << ": " << pair.second << std::endl;
+    }
+
+    std::cout << "\nTrigram Histogram:" << std::endl;
+    for (const auto& pair : trigramHistogram) {
+        std::cout << pair.first << ": " << pair.second << std::endl;
+    }
+
+
+    std::chrono::duration<double> parallelTime8 = endParallel8 - startParallel8;
+    std::cout << "\nParallel execution time with 8 threads: " << parallelTime8.count() << " seconds." << std::endl;
+
+    auto speedup8 = sequentialTime.count() / parallelTime8.count();
+
+    std::cout << "\nSpeedup: " << speedup8 << std::endl;
+    std::cout << "---------------------------------------------------------------------------------------" << std::endl;
+    std::cout << "\n* Parallel Execution *" << std::endl;
+
+    auto startParallel4 = std::chrono::high_resolution_clock::now();
+
+    num_threads = 4;
+    omp_set_num_threads(num_threads);
+    std::cout << "\nNumber of threads: " << num_threads << std::endl;
+
+#pragma omp parallel sections // Inizio della sezione parallela
+
+    {
+#pragma omp section
+        {
+            bigramHistogram = computeBigramHistogramParallel(text);
         }
 
-        std::cout << "\nTrigram Histogram:" << std::endl;
-        for (const auto& pair : trigramHistogram) {
-            std::cout << pair.first << ": " << pair.second << std::endl;
+#pragma omp section 
+        {
+            trigramHistogram = computeTrigramHistogramParallel(text);
         }
+    }
+    auto endParallel4 = std::chrono::high_resolution_clock::now();
 
-        std::chrono::duration<double> parallelTime = endParallel - startParallel;
-        std::cout << "\nParallel execution time: " << parallelTime.count() << " seconds." << std::endl;
+    std::cout << "\nBigram Histogram:" << std::endl;
+    for (const auto& pair : bigramHistogram) {
+        std::cout << pair.first << ": " << pair.second << std::endl;
+    }
 
-        auto speedup = sequentialTime.count() / parallelTime.count();
-        std::cout << "\nSpeedup: " << speedup << std::endl;
+    std::cout << "\nTrigram Histogram:" << std::endl;
+    for (const auto& pair : trigramHistogram) {
+        std::cout << pair.first << ": " << pair.second << std::endl;
+    }
 
+
+    std::chrono::duration<double> parallelTime4 = endParallel4 - startParallel4;
+    std::cout << "\nParallel execution time with 4 threads: " << parallelTime4.count() << " seconds." << std::endl;
+
+    auto speedup4 = sequentialTime.count() / parallelTime4.count();
+
+    std::cout << "\nSpeedup: " << speedup4 << std::endl;
+    std::cout << "---------------------------------------------------------------------------------------" << std::endl;
+    std::cout << "\nSpeedup records:\n \n- 16 threads speedup: "<<speedup16<<"\n- 8  threads speedup: "<<speedup8<<"\n- 4  threads speedup: "<<speedup4<<"\n ";
+   
     return 0;
 }
