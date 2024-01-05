@@ -128,7 +128,7 @@ std::map<std::string, int> computeTrigramHistogramParallel(const std::string& te
 int main() {
     // Lettura del testo da un file
     std::string path = std::filesystem::current_path().string();
-    std::ifstream inputFile(path + "/MobyDick_chap1.txt");
+    std::ifstream inputFile(path + "/generic_text.txt");
     if (!inputFile.is_open() || !inputFile.good()) {
         
         std::cout << "Impossibile aprire il file o l'input non e' valido." << std::endl;
