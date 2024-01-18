@@ -25,9 +25,9 @@ di testo generico di circa 100 MB.
 
 Modifiche al repository del 05/01/2024:
 
--Effettuati esperimenti cambiando il numero di thread per l'esecuzione in parallelo: sono stati condotti esperimenti per valutare l'impatto del numero di thread sull'esecuzione in parallelo. Ho apportate modifiche al codice per consentire la regolazione del numero di thread utilizzati. Ho utilizzato la funzione omp_set_num_threads() per impostare il numero di thread a valori diversi, come ad esempio 4, 8 e 16. Sono stati misurati i tempi di esecuzione e valutati i risultati ottenuti per determinare l'ottimale utilizzo del numero di thread per il caso specifico.
+- Effettuati esperimenti cambiando il numero di thread per l'esecuzione in parallelo: sono stati condotti esperimenti per valutare l'impatto del numero di thread sull'esecuzione in parallelo. Ho apportate modifiche al codice per consentire la regolazione del numero di thread utilizzati. Ho utilizzato la funzione omp_set_num_threads() per impostare il numero di thread a valori diversi, come ad esempio 4, 8 e 16. Sono stati misurati i tempi di esecuzione e valutati i risultati ottenuti per determinare l'ottimale utilizzo del numero di thread per il caso specifico.
 
--Cambiato il dataset di parole da 1 MB a 100 MB: Il dataset di parole utilizzato per i test è stato aumentato da 1 MB a 100 MB. Questo cambiamento è stato effettuato per valutare le prestazioni del sistema su un volume di dati più ampio e per verificare la scalabilità dell'algoritmo. Ho eseguito nuovi test e raccolti i tempi di esecuzione per confrontare le prestazioni con il dataset di dimensioni maggiori.
+- Cambiato il dataset di parole da 1 MB a 100 MB: Il dataset di parole utilizzato per i test è stato aumentato da 1 MB a 100 MB. Questo cambiamento è stato effettuato per valutare le prestazioni del sistema su un volume di dati più ampio e per verificare la scalabilità dell'algoritmo. Ho eseguito nuovi test e raccolti i tempi di esecuzione per confrontare le prestazioni con il dataset di dimensioni maggiori.
 
 Modifiche al repository del 18/01/2024:
 - Aggiunta delle funzioni 'computeWordBigramHistogramSequential' e 'computeWordTrigramHistogramSequential' per calcolare gli istogrammi dei bigrammi e trigrammi di parole in modo sequenziale.
