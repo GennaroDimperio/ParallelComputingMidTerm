@@ -92,14 +92,15 @@ std::map<std::string, int> computeCharBigramHistogramParallel(const std::string&
     const int numThreads = omp_get_max_threads();
     const size_t textLength = text.length();
     const size_t blockSize = (textLength + numThreads - 1) / numThreads;
+    std::map<std::string, int> localHistogram;
 
-#pragma omp parallel num_threads(numThreads)
+
+#pragma omp parallel num_threads(numThreads) private(localHistogram)
     {
         int threadId = omp_get_thread_num();
         size_t start = blockSize * threadId;
         size_t end = std::min(start + blockSize, textLength);
 
-        std::map<std::string, int> localHistogram;
 
         for (size_t i = start; i < text.length() - 1; ++i) {
             std::string currentBigram;
@@ -131,14 +132,15 @@ std::map<std::string, int> computeCharTrigramHistogramParallel(const std::string
     const int numThreads = omp_get_max_threads();
     const size_t textLength = text.length();
     const size_t blockSize = (textLength + numThreads - 1) / numThreads;
+    std::map<std::string, int> localHistogram;
 
-#pragma omp parallel num_threads(numThreads)
+#pragma omp parallel num_threads(numThreads) private(localHistogram)
     {
         int threadId = omp_get_thread_num();
         size_t start = blockSize * threadId;
         size_t end = std::min(start + blockSize, textLength);
 
-        std::map<std::string, int> localHistogram;
+        
 
         for (size_t i = start + 1; i < end - 1; ++i) {
             std::string currentTrigram = text.substr(i - 1, 3);
@@ -171,14 +173,14 @@ std::map<std::string, int> computeWordBigramHistogramParallel(const std::string&
     const int numThreads = omp_get_max_threads();
     const size_t textLength = text.length();
     const size_t blockSize = (textLength + numThreads - 1) / numThreads;
-
-#pragma omp parallel num_threads(numThreads)
+    std::map<std::string, int> localHistogram;
+#pragma omp parallel num_threads(numThreads) private(localHistogram)
     {
         int threadId = omp_get_thread_num();
         size_t start = blockSize * threadId;
         size_t end = std::min(start + blockSize, textLength);
 
-        std::map<std::string, int> localHistogram;
+        
 
         std::istringstream iss(text.substr(start, end - start));
         std::vector<std::string> words(std::istream_iterator<std::string>{iss},
@@ -211,14 +213,15 @@ std::map<std::string, int> computeWordTrigramHistogramParallel(const std::string
     const int numThreads = omp_get_max_threads();
     const size_t textLength = text.length();
     const size_t blockSize = (textLength + numThreads - 1) / numThreads;
+    std::map<std::string, int> localHistogram;
 
-#pragma omp parallel num_threads(numThreads)
+#pragma omp parallel num_threads(numThreads) private(localHistogram)
     {
         int threadId = omp_get_thread_num();
         size_t start = blockSize * threadId;
         size_t end = std::min(start + blockSize, textLength);
 
-        std::map<std::string, int> localHistogram;
+        
 
         std::istringstream iss(text.substr(start, end - start));
         std::vector<std::string> words(std::istream_iterator<std::string>{iss},
