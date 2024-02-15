@@ -33,3 +33,8 @@ Modifiche al repository del 18/01/2024:
 - Aggiunta delle funzioni 'computeWordBigramHistogramSequential' e 'computeWordTrigramHistogramSequential' per calcolare gli istogrammi dei bigrammi e trigrammi di parole in modo sequenziale.
 - Aggiunta delle funzioni 'computeWordBigramHistogramParallel' e 'computeWordTrigramHistogramParallel' per calcolare gli istogrammi dei bigrammi e trigrammi di parole in modo parallelo.
 - Aggiunta di commenti per dividere in blocchi le funzioni del codice, al fine di renderlo più leggibile e comprensibile.
+
+  Modifiche al repository del 15/02/2024:
+  - Testati diversi modi alternativi per valutare l'efficienza del codice, tra cui l'utilizzo di un unico for parallelo e una sezione critica senza un istogramma locale. I risultati risultano più scadenti del codice proposto.
+  - Aggiunta un file C++ 'ForParallel.cpp' contenente una delle funzioni in parallelo rielaborata in un unico ciclo for, che dimostra che le prestazioni sono inferiori rispetto alle tecniche utilizzate nel file principale.
+  - Aggiunta di 2 screenshot che testimoniamo l'inefficienza della soluzione adottata nel file 'ForParallel.cpp'
