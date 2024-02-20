@@ -41,4 +41,5 @@ Modifiche al repository del 15/02/2024:
  
 Modifiche al repository del 20/02/2024:
 - È stato introdotto un vettore di istogrammi locali (localHistograms) per ciascun thread, sostituendo l'approccio precedente che utilizzava un vettore di istogrammi privato.
-- Sostituita la sezione critica con operazioni atomiche (#pragma omp atomic) durante l'aggregazione degli istogrammi locali nell'istogramma globale. 
+- Sostituita la sezione critica con operazioni atomiche (#pragma omp atomic) durante l'aggregazione degli istogrammi locali nell'istogramma globale.
+- Commentata la stampa a video di tutti i bigrammi/trigrammi del testo per valutare essenzialmente le prestazioni del codice
