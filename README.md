@@ -2,11 +2,6 @@
 Mid-term assignment
 Questo repository contiene il codice sorgente per il progetto ParallelProject. Di seguito sono fornite alcune informazioni importanti riguardo allo sviluppo e all'esecuzione del progetto.
 
-## Avviso sull'assenza di commit intermedi
-
-A causa di un mio errore, non sono stati effettuati commit intermedi durante lo sviluppo di questo progetto. Pertanto, potrebbe sembrare che il codice sia stato caricato in una sola volta senza alcuna iterazione. 
-Mi scuso per questa dimenticanza. Tuttavia, il codice caricato rappresenta la versione del progetto completa.
-
 ## Test e ottimizzazioni
 
 Prima di arrivare a questa soluzione, ho effettuato diversi test per valutare le prestazioni e l'efficienza del codice. Ho eseguito test su diversi metodi di parallelizzazione e ho analizzato lo speedup
@@ -36,8 +31,6 @@ Modifiche al repository del 18/01/2024:
 
 Modifiche al repository del 15/02/2024:
 - Testati diversi modi alternativi per valutare l'efficienza del codice, tra cui l'utilizzo di un unico for parallelo e una sezione critica senza un istogramma locale. I risultati risultano più scadenti del codice proposto.
-- Aggiunta un file C++ 'ForParallel.cpp' contenente una delle funzioni in parallelo rielaborata in un unico ciclo for, che dimostra che le prestazioni sono inferiori rispetto alle tecniche utilizzate nel file principale.
-- Aggiunta di 2 screenshot che testimoniamo l'inefficienza della soluzione adottata nel file 'ForParallel.cpp'.
  
 Modifiche al repository del 20/02/2024:
 - È stato introdotto un vettore di istogrammi locali (localHistograms) per ciascun thread, sostituendo l'approccio precedente che utilizzava un vettore di istogrammi privato.
