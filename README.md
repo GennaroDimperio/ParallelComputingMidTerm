@@ -20,7 +20,7 @@ ho determinato che questi warning potrebbero essere dei "falsi positivi". Il fra
 
 ## File generic_text.txt
 
-Ho utilizzato inizialmente un file di testo contenente il famoso libro di Moby Dick, ma in seguito sono stati aggiunti altri libri presi dal sito di "Gutenberg project". In seguito ho scaricato un file
+Inizialmente Ho utilizzato inizialmente un file di testo contenente il famoso libro di Moby Dick, ma in seguito sono stati aggiunti altri libri presi dal sito di "Gutenberg project". In seguito ho scaricato un file
 di testo generico di circa 100 MB.
 
 Modifiche al repository del 05/01/2024:
@@ -37,9 +37,10 @@ Modifiche al repository del 18/01/2024:
 Modifiche al repository del 15/02/2024:
 - Testati diversi modi alternativi per valutare l'efficienza del codice, tra cui l'utilizzo di un unico for parallelo e una sezione critica senza un istogramma locale. I risultati risultano più scadenti del codice proposto.
 - Aggiunta un file C++ 'ForParallel.cpp' contenente una delle funzioni in parallelo rielaborata in un unico ciclo for, che dimostra che le prestazioni sono inferiori rispetto alle tecniche utilizzate nel file principale.
-- Aggiunta di 2 screenshot che testimoniamo l'inefficienza della soluzione adottata nel file 'ForParallel.cpp'
+- Aggiunta di 2 screenshot che testimoniamo l'inefficienza della soluzione adottata nel file 'ForParallel.cpp'.
  
 Modifiche al repository del 20/02/2024:
 - È stato introdotto un vettore di istogrammi locali (localHistograms) per ciascun thread, sostituendo l'approccio precedente che utilizzava un vettore di istogrammi privato.
 - Sostituita la sezione critica con operazioni atomiche (#pragma omp atomic) durante l'aggregazione degli istogrammi locali nell'istogramma globale.
-- Commentata la stampa a video di tutti i bigrammi/trigrammi del testo per valutare essenzialmente le prestazioni del codice
+- Commentata la stampa a video di tutti i bigrammi/trigrammi del testo per valutare essenzialmente le prestazioni del codice.
+- Aggiunto generic_books.txt per un test più rapido (14MB).
